@@ -8,8 +8,12 @@
 .client-strip__viewport{min-width:0;overflow:hidden}
 .client-strip__track{display:flex;width:max-content;animation:client-marquee 28s linear infinite;will-change:transform}
 .client-strip__group{display:flex;flex:none;gap:52px;padding-right:52px}
+.client-strip__logo{position:relative;flex:0 0 160px;width:160px;height:72px}
+.client-strip__logo img{object-fit:contain}
+.client-preview{position:fixed;z-index:120;width:min(300px,calc(100vw - 38px));height:170px;background:#fff;border:2px solid #fff;box-shadow:0 24px 70px rgba(0,0,0,.38);opacity:0;visibility:hidden;transform:translate(-50%,-50%) scale(.45);transform-origin:center;transition:opacity .18s,transform .22s,visibility .18s;pointer-events:none}.client-preview.is-visible{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1)}.client-preview>img{object-fit:contain}
 .client-strip__viewport:hover .client-strip__track,.client-strip__viewport:focus .client-strip__track,.client-strip__viewport:focus-within .client-strip__track{animation-play-state:paused}
-@media(max-width:767px){.client-strip__viewport{margin-top:18px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.client-strip__viewport::-webkit-scrollbar{display:none}.client-strip__track{animation:none}.client-strip__group{gap:35px;padding-right:35px}.client-strip__group[aria-hidden="true"]{display:none}}
+@media(max-width:767px){.client-strip__viewport{margin-top:18px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.client-strip__viewport::-webkit-scrollbar{display:none}.client-strip__track{animation:none}.client-strip__group{gap:35px;padding-right:35px}.client-strip__logo{flex-basis:130px;width:130px;height:60px}.client-strip__group[aria-hidden="true"]{display:none}}
+@media(max-width:767px),(hover:none){.client-preview{display:none}}
 @media(prefers-reduced-motion:reduce){.client-strip__track{animation:none}.client-strip__viewport{overflow-x:auto}.client-strip__group[aria-hidden="true"]{display:none}}
 
 .what-we-do{height:100svh;padding:92px var(--gutter) 34px;overflow:hidden;background:var(--bg)}
