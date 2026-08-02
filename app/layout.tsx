@@ -8,7 +8,7 @@ import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 
 const geistSans = localFont({ src: "./fonts/geist-latin.woff2", variable: "--font-geist-sans", display: "swap", weight: "100 900" });
-const oswald = localFont({ src: "./fonts/oswald-latin.woff2", variable: "--font-display", display: "swap", weight: "200 700" });
+const oswald = localFont({ src: "./fonts/oswald-latin.woff2", variable: "--font-condensed", display: "swap", weight: "200 700" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mediamingles.in"),

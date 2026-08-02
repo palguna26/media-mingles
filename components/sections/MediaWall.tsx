@@ -12,7 +12,8 @@ export function MediaWall() {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
       if (!matchMedia("(min-width: 901px) and (prefers-reduced-motion: no-preference)").matches) return;
-      gsap.utils.toArray<HTMLElement>(".media-tile").forEach((tile, i) => gsap.fromTo(tile, { y: i % 2 ? 45 : -30 }, { y: i % 2 ? -45 : 30, ease: "none", scrollTrigger: { trigger: root.current, scrub: 1.2, start: "top bottom", end: "bottom top" } }));
+      gsap.from(".media-wall__intro > *", { yPercent: 45, opacity: 0, stagger: .12, duration: .9, ease: "power3.out", scrollTrigger: { trigger: root.current, start: "top 72%" } });
+      gsap.utils.toArray<HTMLElement>(".media-tile").forEach((tile, i) => gsap.from(tile, { y: 42, opacity: 0, duration: .9, delay: (i % 2) * .08, ease: "power3.out", scrollTrigger: { trigger: tile, start: "top 84%" } }));
     }, root);
     return () => ctx.revert();
   }, []);
