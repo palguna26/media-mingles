@@ -15,11 +15,20 @@ function PageIntro() {
   }, []);
   useEffect(() => {
     if (!visible || !root.current) return;
-    const context = gsap.context(() => { gsap.timeline({ onComplete: () => setVisible(false) }).from(".page-intro__mark", { yPercent: 120, duration: .45, ease: "power4.out" }).to(".page-intro__frame span", { yPercent: -100, duration: .35, stagger: .06, ease: "power3.in" }, .72).to(root.current, { clipPath: "inset(0 0 100% 0)", duration: .72, ease: "power4.inOut" }, .88); }, root);
+    const context = gsap.context(() => {
+      const timeline = gsap.timeline({ onComplete: () => setVisible(false) });
+      timeline
+        .set(".page-intro__letter", { autoAlpha: 0 })
+        .set(".page-intro__mark", { xPercent: -50, yPercent: -50 })
+        .to(".page-intro__letter", { autoAlpha: 1, duration: .01, stagger: .065, ease: "none" })
+        .to(".page-intro__caret", { opacity: 0, duration: .08 }, ">+.18")
+        .to(".page-intro__mark", { left: "var(--gutter)", top: "calc(100% - 24px)", xPercent: 0, yPercent: -100, scale: .3, transformOrigin: "left bottom", duration: .7, ease: "power4.inOut" }, ">+.08")
+        .to(root.current, { clipPath: "inset(0 0 100% 0)", duration: .8, ease: "power4.inOut" }, ">+.08");
+    }, root);
     return () => context.revert();
   }, [visible]);
   if (!visible) return null;
-  return <div ref={root} className="page-intro" aria-hidden="true"><div className="page-intro__mark">MEDIA MINGLES<span>.</span></div><div className="page-intro__frame"><span>FRAME 001</span><span>BENGALURU / INDIA</span></div></div>;
+  return <div ref={root} className="page-intro" aria-hidden="true"><div className="page-intro__mark">{"MEDIA MINGLES".split("").map((letter, index) => <span className="page-intro__letter" key={`${letter}-${index}`}>{letter === " " ? "\u00a0" : letter}</span>)}<i className="page-intro__caret" /></div></div>;
 }
 
 function CustomCursor() {
