@@ -14,13 +14,14 @@ export function SelectedWork() {
       media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
         const cards = gsap.utils.toArray<HTMLElement>(".project");
         gsap.set(cards, { yPercent: 105 });
-        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=185%", pin: true, scrub: .65, anticipatePin: 1 } })
+        const timeline = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=185%", pin: true, scrub: .65, anticipatePin: 1 } })
           .to(".work-sequence__head", { yPercent: -24, opacity: 0, ease: "none" })
           .to(cards[0], { yPercent: 0, ease: "none" }, "<")
           .to(cards[1], { yPercent: 0, ease: "none" })
           .to(cards[0], { yPercent: -14, opacity: .12, ease: "none" }, "<")
           .to(cards[2], { yPercent: 0, ease: "none" })
           .to(cards[1], { yPercent: -14, opacity: .12, ease: "none" }, "<");
+        projects.forEach((project, index) => timeline.to(root.current, { backgroundColor: project.accent, color: "#080808", duration: .12, ease: "none" }, index * .9));
       });
       return () => media.revert();
     }, root);
