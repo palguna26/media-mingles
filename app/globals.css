@@ -115,3 +115,6 @@ a:not(.button){transition:color .2s ease}a:not(.button):hover{color:var(--accent
   .button,.text-link{min-height:46px}.lead-form input,.lead-form select,.lead-form textarea{font-size:16px}
 }
 @media(max-width:390px){.hero h1{font-size:17vw}.campaign-card-shell{flex-basis:86vw}.footer h2{font-size:23vw}.footer__bottom{font-size:12px}}
+@keyframes hero-ambient-drift{0%{transform:translate3d(-3%,-2%,0) scale(1)}50%{transform:translate3d(4%,3%,0) scale(1.08)}100%{transform:translate3d(-1%,5%,0) scale(1.03)}}
+@keyframes hero-ambient-breathe{0%,100%{opacity:.34;transform:scale(.92)}50%{opacity:.58;transform:scale(1.12)}}
+.hero--statue:before{inset:-12%;opacity:.72;background:radial-gradient(ellipse at 20% 34%,rgba(116,0,28,.2),transparent 38%),radial-gradient(ellipse at 76% 58%,rgba(255,18,70,.13),transparent 34%),radial-gradient(ellipse at 48% 85%,rgba(104,0,25,.16),transparent 36%);background-size:auto;background-position:initial;filter:blur(24px);animation:hero-ambient-drift 15s ease-in-out infinite alternate;will-change:transform}.hero--statue:after{inset:18% 28%;border-radius:50%;background:radial-gradient(circle,rgba(238,0,54,.14),rgba(112,0,26,.06) 42%,transparent 70%);filter:blur(46px);animation:hero-ambient-breathe 8s ease-in-out infinite;pointer-events:none}
