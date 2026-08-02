@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "./premium.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
@@ -11,7 +12,7 @@ const oswald = localFont({ src: "./fonts/oswald-latin.woff2", variable: "--font-
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mediamingles.in"),
-  title: { default: "Media Mingles — Pan-India Content Studio", template: "%s — Media Mingles" },
+  title: { default: "Media Mingles — Creative Agency", template: "%s — Media Mingles" },
   description: "One studio that plans, shoots, casts and scales across social, influence, production, search and PR.",
   openGraph: { title: "Media Mingles", description: "One studio that plans, shoots, casts and scales.", type: "website", locale: "en_IN" },
 };

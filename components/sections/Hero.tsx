@@ -3,36 +3,29 @@
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { projects } from "@/data/projects";
 
 export function Hero() {
   const root = useRef<HTMLElement>(null);
+
   useLayoutEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 769px) and (prefers-reduced-motion: no-preference)", () => {
-        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=120%", scrub: 1, pin: true } })
-          .to(".hero__line--one", { xPercent: -15, scale: 1.25 }, 0)
-          .to(".hero__line--two", { xPercent: 12, scale: 1.5 }, 0)
-          .to(".hero__media--one", { xPercent: -120, yPercent: -40, rotate: -14 }, 0)
-          .to(".hero__media--two", { xPercent: 120, yPercent: 30, rotate: 12 }, 0)
-          .to(".hero__mask", { clipPath: "inset(0% 0% 0% 0%)" }, .35);
-      });
-      return () => mm.revert();
+      gsap.from(".hero__line", { yPercent: 105, duration: 1.1, stagger: .12, ease: "power4.out" });
+      gsap.from(".hero__intro, .hero__actions", { y: 18, opacity: 0, duration: .8, stagger: .1, delay: .45, ease: "power3.out" });
+      gsap.from(".hero__frame img", { scale: 1.06, opacity: 0, duration: 1.8, delay: .15, ease: "power3.out" });
     }, root);
     return () => ctx.revert();
   }, []);
+
   return <section ref={root} id="top" className="hero">
-    <div className="hero__eyebrow"><span>Pan-India Content Studio</span><span>500+ Creator Network</span></div>
-    <div className="hero__media hero__media--one"><Image src={projects[0].image} alt="Media Mingles product campaign" fill quality={72} sizes="18vw" /></div>
-    <div className="hero__media hero__media--two"><Image src={projects[1].image} alt="Media Mingles social campaign" fill quality={72} sizes="14vw" /></div>
-    <h1><span className="hero__line hero__line--one">CAPTURE</span><span className="hero__line hero__line--two"><i>GROWTH.</i></span></h1>
-    <div className="hero__bottom"><p>One studio that plans, shoots, casts and scales — social, influence, production, search and PR.</p><div className="hero__actions"><MagneticButton href="/contact#audit">Get your free audit</MagneticButton><a href="#work" className="text-link">See our work ↗</a></div></div>
-    <div className="hero__scroll"><span>Scroll to explore</span><ArrowDown size={16} /></div>
-    <div className="hero__mask" aria-hidden="true" />
+    <div className="hero__topline"><span>Independent creative agency</span><span>Bengaluru / India</span></div>
+    <div className="hero__headline">
+      <h1><span className="text-mask"><span className="hero__line">WE MAKE BRANDS</span></span><span className="text-mask"><span className="hero__line"><i>HARD</i> TO IGNORE.</span></span></h1>
+      <div className="hero__intro"><span className="record-dot" /> Strategy · Creative · Production · Media</div>
+    </div>
+    <div className="hero__frame"><Image src="/media/unfold-brand.jpeg" alt="Media Mingles creative campaign portrait" fill priority quality={75} sizes="100vw" /></div>
+    <div className="hero__footer"><p>We bring strategy, creators, production and media together for brands that want to be remembered.</p><div className="hero__actions"><MagneticButton href="#work">View our work</MagneticButton><a href="/contact#audit" className="text-link">Start a project <ArrowUpRight size={15} /></a></div><span className="hero__scroll">Scroll <ArrowDown size={14} /></span></div>
   </section>;
 }
