@@ -19,6 +19,9 @@ export function Testimonials() {
             .to(card, { yPercent: -155, xPercent: direction * 58, rotate: direction * 16, duration: .75, ease: "power2.in", opacity: .18 }, `>${-.12}`);
         });
       });
+      media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+        gsap.utils.toArray<HTMLElement>(".testimonial-card").forEach((card, index) => gsap.from(card, { x: index % 2 ? 45 : -45, y: 55, rotate: index % 2 ? 3 : -3, opacity: 0, duration: .7, ease: "power3.out", scrollTrigger: { trigger: card, start: "top 88%" } }));
+      });
       return () => media.revert();
     }, root);
     return () => context.revert();

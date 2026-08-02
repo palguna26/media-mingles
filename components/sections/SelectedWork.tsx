@@ -23,6 +23,9 @@ export function SelectedWork() {
           .to(cards[1], { yPercent: -14, opacity: .12, ease: "none" }, "<");
         projects.forEach((project, index) => timeline.to(root.current, { backgroundColor: project.accent, color: "#080808", duration: .12, ease: "none" }, index * .9));
       });
+      media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+        gsap.utils.toArray<HTMLElement>(".project").forEach((card) => gsap.from(card, { y: 80, opacity: 0, duration: .75, ease: "power3.out", scrollTrigger: { trigger: card, start: "top 88%" } }));
+      });
       return () => media.revert();
     }, root);
     return () => context.revert();

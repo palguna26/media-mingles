@@ -27,6 +27,9 @@ export function WhatWeDo() {
           .to(cards[2], { xPercent: 0, ease: "none" })
           .to(cards[1], { xPercent: -18, opacity: .15, ease: "none" }, "<");
       });
+      media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
+        gsap.utils.toArray<HTMLElement>(".capability-slide").forEach((card) => gsap.from(card, { y: 70, opacity: 0, duration: .7, ease: "power3.out", scrollTrigger: { trigger: card, start: "top 88%" } }));
+      });
       return () => media.revert();
     }, root);
     return () => context.revert();
