@@ -29,7 +29,7 @@ export const HeroStatue = forwardRef<HeroStatueHandle>(function HeroStatue(_, re
     const camera = new THREE.PerspectiveCamera(32, 1, .1, 100);
     camera.position.z = 6.1;
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.innerWidth < 768 ? 1.25 : 1.75));
     renderer.setClearColor(0x000000, 0);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     element.appendChild(renderer.domElement);

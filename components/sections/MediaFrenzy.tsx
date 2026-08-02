@@ -17,7 +17,7 @@ export function MediaFrenzy() {
   useLayoutEffect(() => {
     const context = gsap.context(() => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
         const cards = gsap.utils.toArray<HTMLElement>(".campaign-card-shell");
         gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top 82%", end: "top 22%", scrub: .65 } })
           .fromTo(".campaigns__head>*", { y: 45, opacity: 0 }, { y: 0, opacity: 1, stagger: .08, duration: .38, ease: "power3.out" })

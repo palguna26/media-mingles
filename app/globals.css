@@ -101,3 +101,17 @@ a:not(.button){transition:color .2s ease}a:not(.button):hover{color:var(--accent
 .campaign-card__copy{color:#fff}.campaign-card__copy span{color:#080808}
 .campaign-card__copy p{max-height:0;margin:0;color:#fff;font-size:14px;line-height:1.35;opacity:0;overflow:hidden;transform:translateY(12px);transition:max-height .35s ease,margin .35s ease,opacity .25s ease,transform .35s ease}.campaign-card:hover .campaign-card__copy p{max-height:120px;margin-top:12px;opacity:1;transform:translateY(0)}.campaign-card:hover .campaign-card__shade{inset:20% 0 0}
 @media(hover:none){.campaign-card__copy p{max-height:120px;margin-top:10px;opacity:1;transform:none}}
+
+@media(max-width:767px){
+  body{font-size:15px}.nav{padding-inline:19px}.wordmark{font-size:18px}.menu{padding-inline:24px}.menu>a{min-height:64px;font-size:clamp(30px,11vw,48px)}
+  .hero{min-height:100svh;padding:82px 19px 28px}.hero h1{font-size:18vw;line-height:.82}.hero__label{font-size:10px}.hero__support{position:relative;z-index:5;margin-top:24px}.hero__support>p{max-width:290px;font-size:16px}.hero__support>div{gap:12px;margin-top:18px}.hero__support .button{width:100%}.hero-statue{left:21%;right:-38%;top:12%;width:auto;height:62%;opacity:.62}
+  .client-strip{padding:18px 19px}.client-strip__group{gap:26px;padding-right:26px}.client-strip__logo{flex-basis:118px;width:118px;height:54px}
+  .lead-capabilities,.work,.services,.testimonials,.pricing-preview,.faq,.insights-preview,.campaigns{padding:74px 19px}.section-head{margin-bottom:36px}.section-head h2,.pricing-preview h2{font-size:13vw}.what-we-do,.work-sequence{padding:74px 19px}.what-we-do__head{padding-bottom:26px}.what-we-do__head h2,.work-sequence__head h2{font-size:13vw}.capability-slide{margin-top:48px}.capability-slide__copy h3{font-size:36px}.work-sequence__head{height:55svh}.work-sequence .project,.work-sequence .project:nth-of-type(even){margin-top:54px}.project__copy h3{font-size:12vw}
+  .services__list article{padding:22px 0}.services__list h3{font-size:26px}.services__list p{font-size:15px}
+  .campaigns__head{margin-bottom:34px}.campaigns__head h2{font-size:12vw}.campaigns__head p{font-size:15px}.campaigns__grid{margin-right:-19px;padding-right:19px;scrollbar-width:none}.campaigns__grid::-webkit-scrollbar{display:none}.campaign-card-shell{flex-basis:82vw}.campaign-card__copy{left:17px;right:15px;bottom:18px}.campaign-card__copy p{font-size:13px}
+  .testimonials--cards .testimonial-card{padding:24px!important}.testimonials--cards .testimonial-card p{font-size:25px;line-height:1.12}.showreel__statement{min-height:64svh;padding:74px 19px}.showreel__poster{height:66svh}.showreel__overlay h3{font-size:18vw}.studio-statement{padding:82px 19px}.studio-statement p{font-size:11.5vw}
+  .pricing-preview>div{margin:45px 0 32px}.pricing-preview article{min-height:190px;padding:22px 8px}.pricing-preview h3{font-size:30px;margin-top:26px}.faq summary{min-height:68px;font-size:23px}.insights-preview h2{font-size:14vw}.insights-preview>p{font-size:17px}.insights-preview .button{width:100%}
+  .footer{padding:78px 19px 24px}.footer h2{font-size:24vw;margin:30px 0 42px}.footer__cta{width:100%;margin-bottom:72px}.footer__grid{grid-template-columns:1fr;gap:34px}.footer__grid>div:first-child{grid-column:auto}.footer__bottom{flex-wrap:wrap;margin-top:38px}
+  .button,.text-link{min-height:46px}.lead-form input,.lead-form select,.lead-form textarea{font-size:16px}
+}
+@media(max-width:390px){.hero h1{font-size:17vw}.campaign-card-shell{flex-basis:86vw}.footer h2{font-size:23vw}.footer__bottom{font-size:12px}}
