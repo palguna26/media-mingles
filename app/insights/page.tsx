@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import { InnerPageHero } from "@/components/ui/InnerPageHero";
+import { PageCTA } from "@/components/ui/PageCTA";
+export const metadata: Metadata = { title: "Insights", description: "Notes from the Media Mingles studio on social, influence, production and growth.", alternates: { canonical: "/insights" } };
+export default function InsightsPage() { return <><InnerPageHero eyebrow="Insights" title={<>NOTES FROM<br /><i>THE STUDIO.</i></>} description="Clear thinking about social, influencer marketing, production and search is on the way." /><section className="coming-soon"><span>Publishing soon</span><h2>We are turning what we learn in the room into useful growth notes.</h2><p>No filler. No recycled trend reports. Just practical ideas for brands competing for attention.</p><a href="mailto:hello@mediamingles.com?subject=Media%20Mingles%20growth%20notes" className="text-link">Ask to join the list ↗</a></section><PageCTA title="Need useful answers now?" copy="Start with a free audit and get recommendations for your brand." /></>; }

@@ -1,0 +1,2 @@
+import { MagneticButton } from "./MagneticButton";
+export function PageCTA({ label = "Ready when you are", title = "Start with a free audit.", copy = "We will show you where to focus first." }: { label?: string; title?: string; copy?: string }) { return <section className="page-cta"><span>{label}</span><h2>{title}</h2><p>{copy}</p><MagneticButton href="/contact#audit">Get your free audit</MagneticButton></section>; }

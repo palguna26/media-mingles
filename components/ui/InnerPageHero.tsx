@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function InnerPageHero({ eyebrow, title, description }: { eyebrow: string; title: React.ReactNode; description: string }) { return <header className="inner-hero"><div className="inner-hero__crumb"><Link href="/">Home</Link><span>/</span><span>{eyebrow}</span></div><span className="inner-hero__eyebrow">{eyebrow}</span><h1>{title}</h1><p>{description}</p></header>; }
