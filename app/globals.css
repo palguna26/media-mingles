@@ -77,3 +77,6 @@ h1,h2,h3,h4,h5,h6,summary{font-family:var(--font-questrial),sans-serif;font-weig
 @media (prefers-reduced-motion:reduce){.testimonials--cards{height:auto;min-height:0;overflow:visible}.testimonials__card-stage{position:relative;inset:auto}.testimonials--cards .testimonial-card{transform:none!important;opacity:1!important}}
 .pricing-preview article{transition:transform .28s cubic-bezier(.2,.8,.2,1),background-color .28s,color .28s,border-color .28s}.pricing-preview article:hover{transform:translateY(-10px);background:var(--accent);color:#080808;border-color:#080808}.pricing-preview article:hover p{color:#080808}
 @media (prefers-reduced-motion:reduce){.pricing-preview article:hover{transform:none}}
+.studio-statement__spotlight{--studio-x:-200px;--studio-y:-200px}
+@media (pointer:fine) and (hover:hover){.studio-statement__spotlight{background:radial-gradient(circle 92px at var(--studio-x) var(--studio-y),var(--accent) 0 52%,var(--text) 100%);background-clip:text;-webkit-background-clip:text;color:transparent;cursor:crosshair}}
+a:not(.button){transition:color .2s ease}a:not(.button):hover{color:var(--accent)}
