@@ -11,7 +11,7 @@ export function MediaWall() {
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const ctx = gsap.context(() => {
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (!matchMedia("(min-width: 901px) and (prefers-reduced-motion: no-preference)").matches) return;
       gsap.utils.toArray<HTMLElement>(".media-tile").forEach((tile, i) => gsap.fromTo(tile, { y: i % 2 ? 90 : -60 }, { y: i % 2 ? -90 : 60, ease: "none", scrollTrigger: { trigger: root.current, scrub: 1.2, start: "top bottom", end: "bottom top" } }));
     }, root);
     return () => ctx.revert();

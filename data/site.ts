@@ -25,11 +25,11 @@ export const creatorTiers = ["Nano · 1K–10K", "Micro · 10K–100K", "Mid-Tie
 export const serviceOptions = ["Social Media Management", "Influencer Marketing", "Product Photoshoot", "Videography", "SEO", "Media & PR", "Not sure yet"] as const;
 
 export const proofAssets = {
-  logos: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/brand-logos.webp",
-  creators: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/influencer-reach.webp",
-  social: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/instagram-results.webp",
-  products: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/proven-partnerships.webp",
-  web: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/web-development.webp",
-  render: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/3d-before-after.webp",
-  seo: "https://mediamingles.in/wp-content/themes/media-mingles/assets/proof/seo-meta.webp",
+  logos: "/media/proof/brand-logos.webp",
+  creators: "/media/proof/influencer-reach.webp",
+  social: "/media/proof/instagram-results.webp",
+  products: "/media/proof/proven-partnerships.webp",
+  web: "/media/proof/web-development.webp",
+  render: "/media/proof/3d-before-after.webp",
+  seo: "/media/proof/seo-meta.webp",
 } as const;
