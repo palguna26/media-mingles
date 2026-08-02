@@ -1,3 +1,0 @@
-import { MagneticButton } from "@/components/ui/MagneticButton";
-import { contactDetails, socialLinks } from "@/data/site";
-export function Contact() { return <section id="contact" className="contact"><span className="contact__label">Bring the product. Or the half-formed idea.</span><h2>LET’S MAKE SOMETHING<br />PEOPLE CAN’T <i>SCROLL PAST.</i></h2><p>We’ll help turn it into something people care about. Bad briefs accepted. Boring ones challenged.</p><MagneticButton href="/contact#audit" circle>Start a<br />project ↗</MagneticButton><div className="contact__links"><a href={`mailto:${contactDetails.email}`}>Email ↗</a><a href={socialLinks.instagram}>Instagram ↗</a><span>{contactDetails.location}</span></div></section>; }

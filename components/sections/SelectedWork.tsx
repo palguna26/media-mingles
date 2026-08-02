@@ -1,5 +1,4 @@
 "use client";
-
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
@@ -10,17 +9,23 @@ export function SelectedWork() {
   const root = useRef<HTMLElement>(null);
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const ctx = gsap.context(() => {
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      gsap.utils.toArray<HTMLElement>(".project").forEach(project => {
-        gsap.from(project, { y: 45, opacity: 0, duration: .9, ease: "power3.out", scrollTrigger: { trigger: project, start: "top 82%" } });
+    const context = gsap.context(() => {
+      const media = gsap.matchMedia();
+      media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
+        const cards = gsap.utils.toArray<HTMLElement>(".project");
+        gsap.set(cards, { yPercent: 105 });
+        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=185%", pin: true, scrub: .65, anticipatePin: 1 } })
+          .to(".work-sequence__head", { yPercent: -24, opacity: 0, ease: "none" })
+          .to(cards[0], { yPercent: 0, ease: "none" }, "<")
+          .to(cards[1], { yPercent: 0, ease: "none" })
+          .to(cards[0], { yPercent: -14, opacity: .12, ease: "none" }, "<")
+          .to(cards[2], { yPercent: 0, ease: "none" })
+          .to(cards[1], { yPercent: -14, opacity: .12, ease: "none" }, "<");
       });
+      return () => media.revert();
     }, root);
-    return () => ctx.revert();
+    return () => context.revert();
   }, []);
 
-  return <section ref={root} id="work" className="work"><div className="section-label"><span>01</span><h2>Selected work</h2><span>Campaigns / production / digital</span></div><div className="work__track">{projects.map(project => <article className="project" key={project.number} style={{ "--accent": project.accent } as React.CSSProperties}>
-    <div className="project__media"><Image src={project.image} alt={`${project.brand} campaign`} fill sizes="(max-width: 900px) 100vw, 62vw" /></div>
-    <div className="project__copy"><span className="project__brand">{project.number} / {project.category}</span><h3>{project.title}</h3><p>{project.description}</p><div className="project__meta"><span>{project.services.join(" · ")}</span><strong>{project.result}</strong></div></div>
-  </article>)}</div></section>;
+  return <section ref={root} id="work" className="work work-sequence"><header className="work-sequence__head"><span>02 / Featured work</span><h2>WORK MADE<br /><i>TO MOVE.</i></h2><p>Selected campaigns, production and digital work.</p></header><div className="work-sequence__stage">{projects.map(project => <article className="project" key={project.number}><div className="project__media"><Image src={project.image} alt={`${project.brand} — ${project.title}`} fill sizes="(max-width: 767px) 100vw, 62vw" style={{ objectFit: project.mediaFit, objectPosition: project.focalPosition }} /></div><div className="project__copy"><span>{project.number} · {project.category}</span><h3>{project.title}</h3><p>{project.brand}</p><p>{project.description}</p><strong>{project.result}</strong><small>{project.services.join(" · ")}</small></div></article>)}</div></section>;
 }
