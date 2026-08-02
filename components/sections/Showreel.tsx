@@ -15,9 +15,11 @@ export function Showreel() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
       mm.add("(min-width: 901px) and (prefers-reduced-motion: no-preference)", () => {
-        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top 70%", end: "center 35%", scrub: .8 } })
-          .fromTo(".showreel__window", { scale: .94 }, { scale: 1 })
-          .fromTo(".showreel__overlay", { opacity: 0 }, { opacity: .72 }, .25);
+        gsap.set(".showreel__window", { yPercent: 105, visibility: "visible" });
+        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=150%", scrub: .8, pin: true } })
+          .to(".showreel__window", { yPercent: 0, ease: "none" }, 0)
+          .to(".showreel__heading", { yPercent: -18, opacity: .18, ease: "none" }, 0)
+          .fromTo(".showreel__overlay", { yPercent: 12, opacity: 0 }, { yPercent: 0, opacity: 1, ease: "none" }, .25);
       });
       return () => mm.revert();
     }, root);

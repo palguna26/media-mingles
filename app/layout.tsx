@@ -6,6 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { PageIntro } from "@/components/ui/PageIntro";
 
 const geistSans = localFont({ src: "./fonts/geist-latin.woff2", variable: "--font-geist-sans", display: "swap", weight: "100 900" });
 const oswald = localFont({ src: "./fonts/oswald-latin.woff2", variable: "--font-condensed", display: "swap", weight: "200 700" });
@@ -18,5 +19,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${geistSans.variable} ${oswald.variable} h-full antialiased`}><body><SmoothScrollProvider><GrainOverlay /><Navbar /><main>{children}</main><Footer /></SmoothScrollProvider></body></html>;
+  return <html lang="en" className={`${geistSans.variable} ${oswald.variable} h-full antialiased`}><body><SmoothScrollProvider><PageIntro /><GrainOverlay /><Navbar /><main>{children}</main><Footer /></SmoothScrollProvider></body></html>;
 }
