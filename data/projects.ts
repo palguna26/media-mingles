@@ -1,0 +1,47 @@
+export const projects = [
+  {
+    number: "01",
+    brand: "Ember Foods",
+    title: "Make Them Crave It",
+    description: "A sensory launch built to stop thumbs and start cravings.",
+    services: ["Social", "Production", "Influence"],
+    result: "3.8× engagement",
+    accent: "#ff4d00",
+    image: "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1800&q=85",
+  },
+  {
+    number: "02",
+    brand: "Nara Beauty",
+    title: "Built for the Feed",
+    description: "A beauty world designed for discovery, desire and daily relevance.",
+    services: ["Creative", "Creators", "Photography"],
+    result: "18M impressions",
+    accent: "#eaa9b2",
+    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1800&q=85",
+  },
+  {
+    number: "03",
+    brand: "Volt Energy",
+    title: "Own the Moment",
+    description: "Fast-cut culture marketing for a brand that refuses to sit still.",
+    services: ["Film", "Social", "Media & PR"],
+    result: "+214% reach",
+    accent: "#d8ff36",
+    image: "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=1800&q=85",
+  },
+] as const;
+
+export const galleryMedia = [
+  ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1000&q=80", "Lifestyle campaign"],
+  ["https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1000&q=80", "Beauty editorial"],
+  ["https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1000&q=80", "Coffee campaign"],
+  ["https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1000&q=80", "Fashion campaign"],
+  ["https://images.unsplash.com/photo-1560343090-f0409e92791a?auto=format&fit=crop&w=1000&q=80", "Product story"],
+  ["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1000&q=80", "Beauty production"],
+  ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1000&q=80", "Footwear launch"],
+  ["https://images.unsplash.com/photo-1531988042231-d39a9cc12a9a?auto=format&fit=crop&w=1000&q=80", "Food photography"],
+  ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80", "Street style"],
+  ["https://images.unsplash.com/photo-1506152983158-b4a74a01c721?auto=format&fit=crop&w=1000&q=80", "Creator campaign"],
+  ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80", "Portrait story"],
+  ["https://images.unsplash.com/photo-1561214115-f2f134cc4912?auto=format&fit=crop&w=1000&q=80", "Art direction"],
+] as const;

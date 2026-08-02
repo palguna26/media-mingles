@@ -1,0 +1,3 @@
+export function Footer() {
+  return <footer className="footer"><div className="footer__word">MEDIA MINGLES<span>.</span></div><div className="footer__grid"><div><span>Based in</span><p>Bengaluru, India</p></div><div><span>Navigate</span><a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div><div><span>Follow</span><a href="#">Instagram</a><a href="#">LinkedIn</a><a href="#">WhatsApp</a></div><div><span>Write to us</span><a href="mailto:hello@mediamingles.com">hello@mediamingles.com</a></div></div><div className="footer__bottom"><span>© 2026 Media Mingles</span><span>Built for attention.</span></div></footer>;
+}
