@@ -23,6 +23,17 @@ export function Hero() {
           .to(".hero__scene-label a", { borderColor: "#080808", duration: .18, ease: "none" }, .74)
           .to(".hero-statue", { opacity: .18, duration: .18, ease: "none" }, .78);
       });
+      mm.add("(max-width: 899px) and (prefers-reduced-motion: no-preference)", () => {
+        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=150%", pin: true, scrub: .65, anticipatePin: 1, onUpdate: (self) => statue.current?.setProgress(gsap.utils.clamp(0, 1, self.progress / .5)) } })
+          .to(".hero__line--media", { xPercent: -115, opacity: 0, duration: .25, ease: "none" }, 0)
+          .to(".hero__line--mingles", { xPercent: 115, opacity: 0, duration: .25, ease: "none" }, 0)
+          .to(".hero__support, .hero__label", { opacity: 0, y: -14, duration: .16, ease: "none" }, .04)
+          .to(".hero__scene-label", { opacity: 1, y: 0, duration: .18, ease: "none" }, .32)
+          .to(".hero__red-bg", { opacity: 1, duration: .22, ease: "none" }, .72)
+          .to(".hero__scene-label", { color: "#080808", duration: .18, ease: "none" }, .74)
+          .to(".hero__scene-label a", { borderColor: "#080808", duration: .18, ease: "none" }, .74)
+          .to(".hero-statue", { opacity: .16, duration: .18, ease: "none" }, .78);
+      });
       return () => mm.revert();
     }, root);
     return () => context.revert();
