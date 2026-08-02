@@ -51,37 +51,6 @@ export const HeroStatue = forwardRef<HeroStatueHandle>(function HeroStatue(_, re
       movingGroup.add(plane);
     });
 
-    const orbitMaterial = new THREE.LineDashedMaterial({ color: 0xffc4cf, transparent: true, opacity: .22, dashSize: .055, gapSize: .045, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false });
-    const dotMaterial = new THREE.PointsMaterial({ color: 0xff8298, size: .042, transparent: true, opacity: .24, blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true, toneMapped: false });
-    const orbitGeometries: THREE.BufferGeometry[] = [];
-    const createOrbit = () => {
-      const orbit = new THREE.Group();
-      const points = Array.from({ length: 241 }, (_, index) => {
-        const angle = (index / 240) * Math.PI * 2;
-        return new THREE.Vector3(Math.cos(angle) * 1.72, Math.sin(angle) * 1.72, 0);
-      });
-      const geometry = new THREE.BufferGeometry().setFromPoints(points);
-      orbitGeometries.push(geometry);
-      const path = new THREE.Line(geometry, orbitMaterial);
-      path.computeLineDistances();
-      orbit.add(path);
-      const dottedRows = [1.52, 1.92].flatMap((radius) => Array.from({ length: 88 }, (_, index) => {
-        const angle = (index / 88) * Math.PI * 2;
-        return new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
-      }));
-      const dotsGeometry = new THREE.BufferGeometry().setFromPoints(dottedRows);
-      orbitGeometries.push(dotsGeometry);
-      orbit.add(new THREE.Points(dotsGeometry, dotMaterial));
-      return orbit;
-    };
-    const ringA = createOrbit();
-    const ringB = createOrbit();
-    const ringC = createOrbit();
-    ringA.rotation.x = Math.PI * .48;
-    ringB.rotation.set(Math.PI * .16, Math.PI * .5, 0);
-    ringC.rotation.set(0, Math.PI * .5, Math.PI * .3);
-    movingGroup.add(ringA, ringB, ringC);
-
     const resize = () => {
       const { width, height } = element.getBoundingClientRect();
       renderer.setSize(width, height, false);
@@ -93,10 +62,8 @@ export const HeroStatue = forwardRef<HeroStatueHandle>(function HeroStatue(_, re
     resize();
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const clock = new THREE.Clock();
     let frame = 0;
     const render = () => {
-      const time = clock.getElapsedTime();
       const value = progress.current;
       const turn = THREE.MathUtils.smoothstep(value, .1, .72) * 3;
       const frameIndex = Math.min(Math.floor(turn), 2);
@@ -105,13 +72,6 @@ export const HeroStatue = forwardRef<HeroStatueHandle>(function HeroStatue(_, re
         material.uniforms.opacity.value = index === frameIndex ? 1 - blend : index === frameIndex + 1 ? blend : 0;
       });
       movingGroup.position.x = THREE.MathUtils.lerp(2.55, 0, value);
-      const ringScale = THREE.MathUtils.lerp(1, 1.72, value);
-      ringA.scale.setScalar(ringScale);
-      ringB.scale.setScalar(ringScale);
-      ringC.scale.setScalar(ringScale);
-      ringA.rotation.z = time * .28 + value * 1.15;
-      ringB.rotation.z = time * -.22 - value * .85;
-      ringC.rotation.x = time * .2 + value * .72;
       renderer.render(scene, camera);
       if (!reducedMotion) frame = requestAnimationFrame(render);
     };
@@ -121,13 +81,10 @@ export const HeroStatue = forwardRef<HeroStatueHandle>(function HeroStatue(_, re
       cancelAnimationFrame(frame);
       observer.disconnect();
       planeGeometry.dispose();
-      orbitGeometries.forEach((geometry) => geometry.dispose());
       statueMaterials.forEach((material) => {
         material.uniforms.map.value.dispose();
         material.dispose();
       });
-      orbitMaterial.dispose();
-      dotMaterial.dispose();
       renderer.dispose();
       renderer.domElement.remove();
     };
