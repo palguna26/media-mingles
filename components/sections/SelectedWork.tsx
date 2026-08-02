@@ -13,8 +13,7 @@ export function SelectedWork() {
     const ctx = gsap.context(() => {
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
       gsap.utils.toArray<HTMLElement>(".project").forEach(project => {
-        gsap.from(project, { y: 55, opacity: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: project, start: "top 78%" } });
-        gsap.fromTo(project.querySelector("img"), { scale: 1.035 }, { scale: 1, ease: "none", scrollTrigger: { trigger: project, start: "top bottom", end: "bottom top", scrub: .8 } });
+        gsap.from(project, { y: 45, opacity: 0, duration: .9, ease: "power3.out", scrollTrigger: { trigger: project, start: "top 82%" } });
       });
     }, root);
     return () => ctx.revert();
