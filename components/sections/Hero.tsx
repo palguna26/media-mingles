@@ -18,8 +18,8 @@ export function Hero() {
           .to(".hero__scene-label", { opacity: 1, y: 0, duration: .16, ease: "none" }, .3)
           .to(".site-video-background__video", { scale: 1.08, opacity: .38, duration: .35, ease: "none" }, .38)
           .to(".hero__color-wash", { opacity: 1, duration: .22, ease: "none" }, .72)
-          .to(".hero__scene-label", { color: "#07133f", duration: .18, ease: "none" }, .74)
-          .to(".hero__scene-label a", { borderColor: "#07133f", duration: .18, ease: "none" }, .74);
+          .to(".hero__scene-label", { color: "#f5f5f5", duration: .18, ease: "none" }, .74)
+          .to(".hero__scene-label a", { borderColor: "#f5f5f5", duration: .18, ease: "none" }, .74);
       });
       mm.add("(max-width: 899px) and (prefers-reduced-motion: no-preference)", () => {
         gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=150%", pin: true, scrub: .65, anticipatePin: 1 } })
@@ -29,8 +29,8 @@ export function Hero() {
           .to(".hero__scene-label", { opacity: 1, y: 0, duration: .18, ease: "none" }, .32)
           .to(".site-video-background__video", { scale: 1.08, opacity: .38, duration: .35, ease: "none" }, .38)
           .to(".hero__color-wash", { opacity: 1, duration: .22, ease: "none" }, .72)
-          .to(".hero__scene-label", { color: "#07133f", duration: .18, ease: "none" }, .74)
-          .to(".hero__scene-label a", { borderColor: "#07133f", duration: .18, ease: "none" }, .74);
+          .to(".hero__scene-label", { color: "#f5f5f5", duration: .18, ease: "none" }, .74)
+          .to(".hero__scene-label a", { borderColor: "#f5f5f5", duration: .18, ease: "none" }, .74);
       });
       return () => mm.revert();
     }, root);
