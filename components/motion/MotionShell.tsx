@@ -2,34 +2,24 @@
 
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
-function PageIntro() {
-  const [visible, setVisible] = useState(false);
-  const root = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem("mm-intro-seen")) return;
-    sessionStorage.setItem("mm-intro-seen", "true");
-    const reveal = window.setTimeout(() => setVisible(true), 0);
-    return () => window.clearTimeout(reveal);
+function VideoIntro() {
+  const [visible, setVisible] = useState(true);
+  const [leaving, setLeaving] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+  const finish = useCallback(() => {
+    setLeaving(true);
+    window.setTimeout(() => setVisible(false), 360);
   }, []);
+
   useEffect(() => {
-    if (!visible || !root.current) return;
-    const context = gsap.context(() => {
-      const timeline = gsap.timeline({ onComplete: () => setVisible(false) });
-      timeline
-        .set(".page-intro__letter", { autoAlpha: 0 })
-        .set(".page-intro__mark", { xPercent: -50, yPercent: -50 })
-        .to(".page-intro__letter", { autoAlpha: 1, duration: .01, stagger: .065, ease: "none" })
-        .to(".page-intro__caret", { opacity: 0, duration: .08 }, ">+.18")
-        .to(".page-intro__mark", { left: "var(--gutter)", top: "calc(100% - 24px)", xPercent: 0, yPercent: -100, scale: .3, transformOrigin: "left bottom", duration: .7, ease: "power4.inOut" }, ">+.08")
-        .to(root.current, { clipPath: "inset(0 0 100% 0)", duration: .8, ease: "power4.inOut" }, ">+.08");
-    }, root);
-    return () => context.revert();
-  }, [visible]);
+    video.current?.play().catch(finish);
+  }, [finish]);
+
   if (!visible) return null;
-  return <div ref={root} className="page-intro" aria-hidden="true"><div className="page-intro__mark">{"MEDIA MINGLES".split("").map((letter, index) => <span className="page-intro__letter" key={`${letter}-${index}`}>{letter === " " ? "\u00a0" : letter}</span>)}<i className="page-intro__caret" /></div></div>;
+  return <div className={`video-intro ${leaving ? "video-intro--leaving" : ""}`} aria-hidden="true"><video ref={video} autoPlay muted playsInline preload="auto" onEnded={finish} onError={finish}><source src="/ascii-magic-4.mp4" type="video/mp4" /></video><button type="button" onClick={finish} tabIndex={-1}>Skip intro</button></div>;
 }
 
 function SiteVideoBackground() {
@@ -176,5 +166,5 @@ export function MotionShell() {
     const refresh = () => ScrollTrigger.refresh(); document.fonts.ready.then(refresh); addEventListener("load", refresh, { once: true });
     return () => { removeEventListener("load", refresh); gsap.ticker.remove(update); lenis.destroy(); };
   }, []);
-  return <><SiteVideoBackground /><PageIntro /><CustomCursor /><ScrollProgress /></>;
+  return <><VideoIntro /><SiteVideoBackground /><CustomCursor /><ScrollProgress /></>;
 }
