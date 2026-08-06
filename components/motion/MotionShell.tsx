@@ -1,6 +1,7 @@
 "use client";
 
 import Lenis from "lenis";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
@@ -31,19 +32,127 @@ function PageIntro() {
   return <div ref={root} className="page-intro" aria-hidden="true"><div className="page-intro__mark">{"MEDIA MINGLES".split("").map((letter, index) => <span className="page-intro__letter" key={`${letter}-${index}`}>{letter === " " ? "\u00a0" : letter}</span>)}<i className="page-intro__caret" /></div></div>;
 }
 
+function SiteVideoBackground() {
+  const pathname = usePathname();
+  const root = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const node = root.current;
+    const media = video.current;
+    if (!node || !media) return;
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) media.pause();
+    else media.play().catch(() => undefined);
+
+    if (pathname !== "/") {
+      node.classList.add("is-blurred");
+      return;
+    }
+
+    const hero = document.querySelector(".hero--video");
+    if (!hero) {
+      node.classList.add("is-blurred");
+      return;
+    }
+
+    node.classList.remove("is-blurred");
+    const observer = new IntersectionObserver(([entry]) => node.classList.toggle("is-blurred", !entry.isIntersecting), { threshold: .2 });
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  return <div ref={root} className={`site-video-background${pathname === "/" ? "" : " is-blurred"}`} aria-hidden="true"><video ref={video} className="site-video-background__video" autoPlay muted loop playsInline preload="metadata"><source src="/background.mp4" type="video/mp4" /></video><div className="site-video-background__tint" /></div>;
+}
+
 function CustomCursor() {
   const cursor = useRef<HTMLDivElement>(null);
+  const canvas = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
-    if (!matchMedia("(pointer: fine) and (hover: hover) and (prefers-reduced-motion: no-preference)").matches || !cursor.current) return;
-    const node = cursor.current; const target = { x: innerWidth / 2, y: innerHeight / 2 }; const current = { ...target };
-    const move = (event: PointerEvent) => { target.x = event.clientX; target.y = event.clientY; node.classList.add("is-visible"); };
-    const over = (event: PointerEvent) => { const hit = (event.target as HTMLElement).closest<HTMLElement>("[data-cursor]"); node.dataset.label = hit?.dataset.cursor ?? ""; node.classList.toggle("is-active", Boolean(hit)); };
-    const leave = () => node.classList.remove("is-visible");
-    const tick = () => { current.x += (target.x - current.x) * .2; current.y += (target.y - current.y) * .2; node.style.transform = `translate3d(${current.x}px,${current.y}px,0)`; };
-    addEventListener("pointermove", move, { passive: true }); document.addEventListener("pointerover", over, { passive: true }); document.documentElement.addEventListener("mouseleave", leave); gsap.ticker.add(tick);
-    return () => { removeEventListener("pointermove", move); document.removeEventListener("pointerover", over); document.documentElement.removeEventListener("mouseleave", leave); gsap.ticker.remove(tick); };
+    const media = matchMedia("(pointer: fine) and (hover: hover) and (prefers-reduced-motion: no-preference)");
+    const node = cursor.current;
+    const surface = canvas.current;
+    const context = surface?.getContext("2d");
+    if (!media.matches || !node || !surface || !context) return;
+
+    const trail: Array<{ x: number; y: number; radius: number; life: number; seed: number }> = [];
+    let last = { x: innerWidth / 2, y: innerHeight / 2 };
+    let hasMoved = false;
+    let seed = 0;
+
+    const resize = () => {
+      const ratio = Math.min(devicePixelRatio, 1.75);
+      surface.width = Math.round(innerWidth * ratio);
+      surface.height = Math.round(innerHeight * ratio);
+      surface.style.width = `${innerWidth}px`;
+      surface.style.height = `${innerHeight}px`;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    };
+    const move = (event: PointerEvent) => {
+      if (!hasMoved) {
+        last = { x: event.clientX, y: event.clientY };
+        hasMoved = true;
+        trail.push({ x: event.clientX, y: event.clientY, radius: 44, life: 1, seed: seed += 1 });
+        node.classList.add("is-visible");
+        return;
+      }
+      const dx = event.clientX - last.x;
+      const dy = event.clientY - last.y;
+      const distance = Math.hypot(dx, dy);
+      const steps = Math.max(1, Math.ceil(distance / 14));
+      const radius = Math.min(76, 44 + distance * .24);
+      for (let step = 1; step <= steps; step += 1) {
+        const progress = step / steps;
+        trail.push({ x: last.x + dx * progress, y: last.y + dy * progress, radius, life: 1, seed: seed += 1 });
+      }
+      if (trail.length > 72) trail.splice(0, trail.length - 72);
+      last = { x: event.clientX, y: event.clientY };
+      node.classList.add("is-visible");
+    };
+    const leave = () => {
+      hasMoved = false;
+      node.classList.remove("is-visible");
+    };
+    const tick = () => {
+      context.clearRect(0, 0, innerWidth, innerHeight);
+      context.fillStyle = "#f6fbff";
+      trail.forEach((point) => {
+        const radius = point.radius * (.76 + point.life * .24);
+        const gridStep = 7;
+        const gridLimit = Math.ceil(radius / gridStep) * gridStep;
+        for (let x = -gridLimit; x <= gridLimit; x += gridStep) {
+          for (let y = -gridLimit; y <= gridLimit; y += gridStep) {
+            const distance = Math.hypot(x, y) / radius;
+            if (distance > 1) continue;
+            const density = .12 + (1 - distance) * .82;
+            const noise = Math.abs(Math.sin(x * 12.9898 + y * 78.233 + point.seed * 37.719) * 43758.5453) % 1;
+            if (noise > density) continue;
+            const size = noise > .72 ? 4 : 3;
+            context.globalAlpha = point.life * (.45 + density * .55);
+            context.fillRect(point.x + x - size / 2, point.y + y - size / 2, size, size);
+          }
+        }
+        point.life -= .034;
+      });
+      context.globalAlpha = 1;
+      for (let index = trail.length - 1; index >= 0; index -= 1) if (trail[index].life <= 0) trail.splice(index, 1);
+      if (!hasMoved && trail.length === 0) node.classList.remove("is-visible");
+    };
+
+    resize();
+    addEventListener("resize", resize, { passive: true });
+    addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("mouseleave", leave);
+    gsap.ticker.add(tick);
+    return () => {
+      removeEventListener("resize", resize);
+      removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("mouseleave", leave);
+      gsap.ticker.remove(tick);
+    };
   }, []);
-  return <div ref={cursor} className="motion-cursor" aria-hidden="true"><span /></div>;
+  return <div ref={cursor} className="motion-cursor" aria-hidden="true"><canvas ref={canvas} /></div>;
 }
 
 function ScrollProgress() {
@@ -67,5 +176,5 @@ export function MotionShell() {
     const refresh = () => ScrollTrigger.refresh(); document.fonts.ready.then(refresh); addEventListener("load", refresh, { once: true });
     return () => { removeEventListener("load", refresh); gsap.ticker.remove(update); lenis.destroy(); };
   }, []);
-  return <><PageIntro /><CustomCursor /><ScrollProgress /></>;
+  return <><SiteVideoBackground /><PageIntro /><CustomCursor /><ScrollProgress /></>;
 }
