@@ -1,5 +1,5 @@
 export const navigation = [
-  { label: "Work", href: "/work" }, { label: "Services", href: "/services" }, { label: "Reach", href: "/reach" }, { label: "Studio", href: "/about" },
+  { label: "Work", href: "/work" }, { label: "Services", href: "/services" }, { label: "About", href: "/about" }, { label: "Contact", href: "/contact" },
 ] as const;
 export const socialLinks = { instagram: "https://instagram.com/mediamingles", linkedin: "https://linkedin.com/company/mediamingles", youtube: "https://youtube.com/@mediamingles" } as const;
 export const clients = ["ALMA", "Novel", "Babio", "Lakmé", "Sanfe", "Maddur Tiffanys", "Sharada", "Grand Serene", "Regent Ceramics"] as const;
