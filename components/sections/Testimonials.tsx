@@ -11,12 +11,11 @@ export function Testimonials() {
       const media = gsap.matchMedia();
       media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
         const cards = gsap.utils.toArray<HTMLElement>(".testimonial-card");
-        gsap.set(cards, { yPercent: 135, rotate: index => index % 2 ? 5 : -5 });
+        gsap.set(cards, { yPercent: 135, xPercent: 0, rotate: 0, opacity: 1 });
         const timeline = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=145%", pin: true, scrub: .7, anticipatePin: 1 } });
         cards.forEach((card, index) => {
-          const direction = index % 2 ? 1 : -1;
-          timeline.to(card, { yPercent: 12, xPercent: direction * 8, rotate: direction * 2, duration: .55, ease: "power2.out" }, index * .08)
-            .to(card, { yPercent: -155, xPercent: direction * 58, rotate: direction * 16, duration: .75, ease: "power2.in", opacity: .18 }, `>${-.12}`);
+          timeline.to(card, { yPercent: 12, duration: .55, ease: "power2.out" }, index * .08)
+            .to(card, { yPercent: -155, duration: .75, ease: "power2.in", opacity: 0 }, `>${-.12}`);
         });
       });
       media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {

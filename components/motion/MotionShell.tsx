@@ -19,7 +19,7 @@ function VideoIntro() {
   }, [finish]);
 
   if (!visible) return null;
-  return <div className={`video-intro ${leaving ? "video-intro--leaving" : ""}`} aria-hidden="true"><video ref={video} autoPlay muted playsInline preload="auto" onEnded={finish} onError={finish}><source src="/ascii-magic-4.mp4" type="video/mp4" /></video><button type="button" onClick={finish} tabIndex={-1}>Skip intro</button></div>;
+  return <div className={`video-intro ${leaving ? "video-intro--leaving" : ""}`} aria-hidden="true"><video ref={video} autoPlay muted playsInline preload="auto" onEnded={finish} onError={finish}><source src="/ascii-magic-4.webm" type="video/webm" /><source src="/ascii-magic-4.mp4" type="video/mp4" /></video><button type="button" onClick={finish} tabIndex={-1}>Skip intro</button></div>;
 }
 
 function SiteVideoBackground() {
@@ -52,7 +52,7 @@ function SiteVideoBackground() {
     return () => observer.disconnect();
   }, [pathname]);
 
-  return <div ref={root} className={`site-video-background${pathname === "/" ? "" : " is-blurred"}`} aria-hidden="true"><video ref={video} className="site-video-background__video" autoPlay muted loop playsInline preload="metadata"><source src="/background.mp4" type="video/mp4" /></video><div className="site-video-background__tint" /></div>;
+  return <div ref={root} className={`site-video-background${pathname === "/" ? "" : " is-blurred"}`} aria-hidden="true"><video ref={video} className="site-video-background__video" autoPlay muted loop playsInline preload="metadata"><source src="/background.webm" type="video/webm" /><source src="/background.mp4" type="video/mp4" /></video><div className="site-video-background__tint" /></div>;
 }
 
 function CustomCursor() {
@@ -70,6 +70,15 @@ function CustomCursor() {
     let last = { x: innerWidth / 2, y: innerHeight / 2 };
     let hasMoved = false;
     let seed = 0;
+    let maskedBounds: DOMRect[] = [];
+    let lastMaskUpdate = 0;
+
+    const refreshMask = () => {
+      maskedBounds = Array.from(document.querySelectorAll<HTMLElement>("main :is(h1,h2,h3,h4,p,a,button,li,span,strong,small,blockquote,summary,input,select,textarea,img), .footer :is(h1,h2,h3,h4,p,a,button,li,span,strong,small,blockquote,summary,input,select,textarea,img)"))
+        .map((element) => element.getBoundingClientRect())
+        .filter((bounds) => bounds.width > 0 && bounds.height > 0);
+      lastMaskUpdate = performance.now();
+    };
 
     const resize = () => {
       const ratio = Math.min(devicePixelRatio, 1.75);
@@ -78,25 +87,26 @@ function CustomCursor() {
       surface.style.width = `${innerWidth}px`;
       surface.style.height = `${innerHeight}px`;
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      refreshMask();
     };
     const move = (event: PointerEvent) => {
       if (!hasMoved) {
         last = { x: event.clientX, y: event.clientY };
         hasMoved = true;
-        trail.push({ x: event.clientX, y: event.clientY, radius: 44, life: 1, seed: seed += 1 });
+        trail.push({ x: event.clientX, y: event.clientY, radius: 17.5, life: 1, seed: seed += 1 });
         node.classList.add("is-visible");
         return;
       }
       const dx = event.clientX - last.x;
       const dy = event.clientY - last.y;
       const distance = Math.hypot(dx, dy);
-      const steps = Math.max(1, Math.ceil(distance / 14));
-      const radius = Math.min(76, 44 + distance * .24);
+      const steps = Math.max(1, Math.ceil(distance / 8));
+      const radius = 17.5;
       for (let step = 1; step <= steps; step += 1) {
         const progress = step / steps;
         trail.push({ x: last.x + dx * progress, y: last.y + dy * progress, radius, life: 1, seed: seed += 1 });
       }
-      if (trail.length > 72) trail.splice(0, trail.length - 72);
+      if (trail.length > 80) trail.splice(0, trail.length - 80);
       last = { x: event.clientX, y: event.clientY };
       node.classList.add("is-visible");
     };
@@ -106,37 +116,44 @@ function CustomCursor() {
     };
     const tick = () => {
       context.clearRect(0, 0, innerWidth, innerHeight);
-      context.fillStyle = "#f6fbff";
+      context.fillStyle = "#ffffff";
       trail.forEach((point) => {
         const radius = point.radius * (.76 + point.life * .24);
-        const gridStep = 7;
+        const gridStep = 3;
         const gridLimit = Math.ceil(radius / gridStep) * gridStep;
         for (let x = -gridLimit; x <= gridLimit; x += gridStep) {
           for (let y = -gridLimit; y <= gridLimit; y += gridStep) {
             const distance = Math.hypot(x, y) / radius;
             if (distance > 1) continue;
-            const density = .12 + (1 - distance) * .82;
+            const density = .03 + (1 - distance) * .28;
             const noise = Math.abs(Math.sin(x * 12.9898 + y * 78.233 + point.seed * 37.719) * 43758.5453) % 1;
             if (noise > density) continue;
-            const size = noise > .72 ? 4 : 3;
-            context.globalAlpha = point.life * (.45 + density * .55);
+            const size = 2;
+            context.globalAlpha = point.life * (.25 + density * .2);
             context.fillRect(point.x + x - size / 2, point.y + y - size / 2, size, size);
           }
         }
-        point.life -= .034;
+        point.life -= .028;
       });
       context.globalAlpha = 1;
+      if (performance.now() - lastMaskUpdate > 120) refreshMask();
+      context.save();
+      context.globalCompositeOperation = "destination-out";
+      maskedBounds.forEach((bounds) => context.fillRect(bounds.left - 3, bounds.top - 3, bounds.width + 6, bounds.height + 6));
+      context.restore();
       for (let index = trail.length - 1; index >= 0; index -= 1) if (trail[index].life <= 0) trail.splice(index, 1);
       if (!hasMoved && trail.length === 0) node.classList.remove("is-visible");
     };
 
     resize();
     addEventListener("resize", resize, { passive: true });
+    addEventListener("scroll", refreshMask, { passive: true, capture: true });
     addEventListener("pointermove", move, { passive: true });
     document.documentElement.addEventListener("mouseleave", leave);
     gsap.ticker.add(tick);
     return () => {
       removeEventListener("resize", resize);
+      removeEventListener("scroll", refreshMask, true);
       removeEventListener("pointermove", move);
       document.documentElement.removeEventListener("mouseleave", leave);
       gsap.ticker.remove(tick);

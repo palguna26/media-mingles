@@ -174,7 +174,7 @@ main,.footer{position:relative;z-index:1}
 .footer{background:rgba(10,10,10,.96)}
 .motion-cursor,.motion-cursor.is-active{position:fixed;inset:0;z-index:0;width:100vw;height:100vh;margin:0;border-radius:0;background:transparent;opacity:0;pointer-events:none;mix-blend-mode:normal;transition:opacity .18s}
 .motion-cursor.is-visible{opacity:1}
-.motion-cursor canvas{position:absolute;inset:0;display:block;mix-blend-mode:difference}
+.motion-cursor canvas{position:absolute;inset:0;display:block;mix-blend-mode:normal}
 .motion-cursor span{position:absolute;top:0;left:0;width:0;height:0;display:grid;place-items:center;border-radius:50%;overflow:hidden;background:rgba(0,0,0,.9);color:var(--light);font:600 9px/1 var(--font-oswald);letter-spacing:.12em;opacity:0;transition:width .22s,height .22s,opacity .18s}
 .motion-cursor.is-active span{width:54px;height:54px;opacity:1}
 .motion-cursor span:after,.motion-cursor.is-active:after{content:none}
@@ -250,6 +250,65 @@ body{font-family:var(--font-geist),sans-serif}
 @media(max-width:899px){.hero--video{padding:94px 19px 22px}.hero--video .hero__content{min-height:calc(100svh - 116px)}.hero--video .hero__label{align-self:flex-start;margin-bottom:30px}.hero--video .hero__main{display:block}.hero--video .hero__main h1{bottom:76px;font-size:clamp(74px,17.5vw,150px)}.hero__services{display:none}.hero--video .hero__support{bottom:clamp(278px,39vh,340px);max-width:390px}.hero__scroll{bottom:124px}.hero--video .hero__contact-card{right:0;bottom:20px;justify-self:auto;width:min(100%,320px)}.hero--video .hero__baseline{margin:0}}
 @media(max-width:480px){.hero--video .hero__main h1{font-size:19vw}.hero--video .hero__support>p{font-size:16px}.hero__contact-card{padding:14px 15px}.hero__footer-row{gap:20px}}
 
+/* Service showcase: a text-led card stack with a rotating number orbit. */
+.what-we-do{height:100svh;min-height:720px;padding:0 var(--gutter)!important;overflow:hidden;display:grid;grid-template-rows:auto minmax(0,1fr)}
+.what-we-do__head{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;padding:28px 0 22px;border-bottom:1px solid rgba(245,245,245,.24)}
+.what-we-do__head span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.what-we-do__head h2{max-width:680px;margin:0;font-size:clamp(34px,5.2vw,76px);line-height:.9;letter-spacing:-.075em;text-align:right}
+.what-we-do__stage{position:relative;min-height:0;overflow:hidden}
+.what-we-do__orbit{position:absolute;z-index:2;top:50%;left:0;width:clamp(280px,28vw,470px);aspect-ratio:1;transform:translate(-40%,-50%);border:1px solid rgba(245,245,245,.16);border-radius:50%;pointer-events:none}
+.what-we-do__orbit-ring{position:absolute;inset:0;will-change:transform}
+.what-we-do__orbit-ring>span{position:absolute;top:50%;left:50%;display:grid;place-items:center;width:42px;height:42px;color:rgba(245,245,245,.34);font:500 15px/1 var(--font-geist);transform:rotate(var(--orbit-angle)) translateX(calc(clamp(280px,28vw,470px) / 2)) rotate(calc(var(--orbit-angle) * -1))}
+.what-we-do__orbit-label{display:block;will-change:transform}
+.what-we-do__service{position:absolute;z-index:1;inset:clamp(40px,9vh,108px) clamp(6vw,13vw,220px) clamp(40px,9vh,108px) clamp(22vw,31vw,520px);display:flex;align-items:center;will-change:transform,opacity}
+.what-we-do__service-copy{display:flex;max-width:760px;flex-direction:column;align-items:flex-start}
+.what-we-do__service-copy>span{font-size:11px;letter-spacing:.1em;color:var(--muted)}
+.what-we-do__service-copy h3{max-width:760px;margin:clamp(24px,5vh,62px) 0 20px;font:500 clamp(48px,7vw,118px)/.86 var(--font-geist);letter-spacing:-.09em}
+.what-we-do__service-copy p{max-width:520px;margin:0;color:#b8b8b8;font-size:clamp(16px,1.35vw,21px);line-height:1.42}
+.what-we-do__service-copy .text-link{margin-top:clamp(28px,5vh,64px);color:#f5f5f5}
+@media(max-width:767px){.what-we-do{height:auto;min-height:0;display:block;padding:74px 19px!important;overflow:visible}.what-we-do__head{display:block;padding:0 0 26px}.what-we-do__head h2{margin-top:18px;text-align:left;font-size:13vw}.what-we-do__stage{overflow:visible}.what-we-do__orbit{display:none}.what-we-do__service{position:relative;inset:auto;display:block;margin-top:18px;padding:24px 0;border-top:1px solid rgba(245,245,245,.24)}.what-we-do__service-copy{min-height:0}.what-we-do__service-copy h3{margin:20px 0 14px;font-size:44px}.what-we-do__service-copy p{font-size:15px}.what-we-do__service-copy .text-link{margin-top:28px}}
+@media(prefers-reduced-motion:reduce){.what-we-do{height:auto;min-height:0;overflow:visible}.what-we-do__stage{overflow:visible}.what-we-do__orbit{display:none}.what-we-do__service{position:relative;inset:auto;margin-top:24px;padding-top:24px;border-top:1px solid rgba(245,245,245,.24);transform:none!important;opacity:1!important}.what-we-do__service:first-of-type{margin-top:0}}
+
+/* Keep all typography upright, including former italic emphasis. */
+i,em{font-style:normal}
+
+/* Fluid particle layer for the footer call-to-action. */
+.motion-cursor,.motion-cursor.is-active{z-index:2}
+
+.footer{isolation:isolate}
+.footer>.footer__particles{position:absolute!important;z-index:0!important;inset:0;overflow:hidden;pointer-events:none;opacity:.82}
+.footer__particles canvas{display:block;width:100%;height:100%}
+.fluid-particles-background__content{position:relative;z-index:1;width:100%;height:100%}
+@media(prefers-reduced-motion:reduce){.footer__particles{opacity:.42}}
+
+/* Rounded desktop navigation. */
+.nav{top:8px;right:8px;left:8px;width:auto;height:64px;padding:0 20px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);border:1px solid rgba(245,245,245,.08);border-radius:18px;background:rgba(8,8,8,.7)!important;box-shadow:0 10px 28px rgba(0,0,0,.18);backdrop-filter:blur(14px)}
+.nav--scrolled{background:rgba(8,8,8,.46)!important;border-color:rgba(245,245,245,.14)}
+.wordmark{align-self:center;text-shadow:none}
+.nav__links{grid-column:2;gap:clamp(24px,4vw,60px)}
+.nav__links>a:not(.button){min-height:44px;color:var(--light);font-size:14px;font-weight:600;letter-spacing:0}
+.nav__cta{grid-column:3;justify-self:end;min-height:44px;padding:0 24px;border:0!important;border-radius:999px!important;background:var(--light)!important;color:var(--dark)!important;font-size:14px!important;font-weight:700!important}
+.nav__cta:hover,.nav__cta:focus-visible{background:#dcdcdc!important;color:var(--dark)!important}
+@media(max-width:1023px){.nav{height:62px;grid-template-columns:1fr auto}.nav__cta{display:none}.nav__toggle{grid-column:2;justify-self:end}}
+
+/* Shared outlined pill buttons. */
+.hero__services li{transform-origin:left center;transition:transform .22s ease,opacity .22s ease}
+.hero__services li:hover,.hero__services li:focus-within{transform:scale(1.055);opacity:1}
+.hero__services li:hover a,.hero__services li:focus-within a{opacity:1}
+
+.hero__contact-card:hover,.hero__contact-card:focus-visible{background:rgba(8,8,8,.82);border-color:#616467;color:var(--light)!important;transform:translateY(-3px)}
+.hero__contact-card:hover span,.hero__contact-card:focus-visible span{color:var(--muted)}
+.hero__contact-card:hover strong,.hero__contact-card:hover i,.hero__contact-card:focus-visible strong,.hero__contact-card:focus-visible i{color:var(--light)}
+
+.button,.lead-form button,.showreel__overlay button{border:0!important;border-radius:999px!important;background:transparent!important;box-shadow:inset 0 0 0 2px #616467;color:var(--light)!important;font-family:var(--font-geist),sans-serif;font-weight:600;letter-spacing:0;text-transform:none;transition:background-color .2s,color .2s,transform .2s}
+.button:hover,.button:focus-visible,.lead-form button:hover,.lead-form button:focus-visible,.showreel__overlay button:hover,.showreel__overlay button:focus-visible{background:#616467!important;color:#fff!important}
+.button{padding:16px 48px}
+.button--small{padding:12px 28px}
+.lead-form button{padding:16px 48px}
+.lead-form button:disabled{opacity:.55;cursor:not-allowed}
+.nav__cta{background:transparent!important;color:var(--light)!important;box-shadow:inset 0 0 0 2px #616467;font-family:var(--font-geist),sans-serif;font-weight:600!important;letter-spacing:0;text-transform:none}
+.nav__cta:hover,.nav__cta:focus-visible{background:#616467!important;color:#fff!important}
+
 /* First-load video intro. */
 .video-intro{position:fixed;z-index:1100;inset:0;overflow:hidden;background:#080808;opacity:1;transition:opacity .36s ease;pointer-events:auto}.video-intro--leaving{opacity:0;pointer-events:none}.video-intro video{display:block;width:100%;height:100%;object-fit:cover}.video-intro button{position:absolute;right:24px;bottom:22px;padding:8px 0;border:0;border-bottom:1px solid rgba(245,245,245,.6);background:transparent;color:#f5f5f5;font:500 11px/1 var(--font-geist);letter-spacing:.08em;text-transform:uppercase;cursor:pointer}@media(max-width:600px){.video-intro button{right:18px;bottom:18px}}
 @media(prefers-reduced-motion:reduce){.video-intro{display:none}}
@@ -257,3 +316,6 @@ body{font-family:var(--font-geist),sans-serif}
 /* Client-journey structure. */
 .how-we-work{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(48px,9vw,150px);padding:clamp(96px,13vw,190px) var(--gutter);background:var(--paper);color:var(--ink)}.how-we-work header{max-width:560px}.how-we-work h2{margin:18px 0 24px;font:500 clamp(46px,6vw,96px)/.9 var(--font-geist);letter-spacing:-.09em}.how-we-work header p{max-width:440px;font-size:18px;line-height:1.45;color:#4c4c49}.how-we-work ol{margin:0;padding:0;list-style:none;border-top:1px solid rgba(16,16,16,.2)}.how-we-work li{display:grid;grid-template-columns:54px minmax(0,1fr) minmax(180px,.9fr);gap:18px;padding:24px 0;border-bottom:1px solid rgba(16,16,16,.2)}.how-we-work li>span{font:500 12px/1 var(--font-geist);letter-spacing:.08em}.how-we-work h3{margin:0;font:500 clamp(24px,2.5vw,42px)/1 var(--font-geist);letter-spacing:-.06em}.how-we-work li p{margin:0;color:#5c5c58;line-height:1.45}.how-we-work>.text-link{grid-column:1;width:max-content;color:var(--ink);border-color:rgba(16,16,16,.45)}
 @media(max-width:899px){.how-we-work{grid-template-columns:1fr;gap:46px;padding:88px 19px}.how-we-work li{grid-template-columns:42px minmax(0,1fr)}.how-we-work li p{grid-column:2}.how-we-work>.text-link{grid-column:auto}}@media(max-width:520px){.how-we-work h2{font-size:14vw}.how-we-work li{padding:20px 0}.how-we-work li p{font-size:15px}}
+
+/* Compact testimonial cards. */
+@media(min-width:768px){.testimonials--cards .testimonial-card{width:75%;padding:clamp(18px,2.25vw,32px)!important}.testimonials--cards .testimonial-card p{max-width:510px;margin:24px 0 39px;font-size:clamp(20px,2.25vw,34.5px)}}

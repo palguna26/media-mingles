@@ -1,38 +1,44 @@
 "use client";
-import Image from "next/image";
+
 import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { proofAssets } from "@/data/site";
-
-const capabilities = [
-  { number: "01", title: "Social and Brand Systems", copy: "Clear strategy and a consistent creative system across every social touchpoint.", image: proofAssets.social },
-  { number: "02", title: "Content and Production", copy: "Photography, reels and brand films made to work across campaigns and commerce.", image: proofAssets.products },
-  { number: "03", title: "Creator and Growth Campaigns", copy: "Vetted creators, sharp briefs and joined-up distribution from one team.", image: proofAssets.creators },
-] as const;
+import { services } from "@/data/services";
 
 export function WhatWeDo() {
   const root = useRef<HTMLElement>(null);
+
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const context = gsap.context(() => {
       const media = gsap.matchMedia();
       media.add("(min-width: 768px) and (prefers-reduced-motion: no-preference)", () => {
-        const cards = gsap.utils.toArray<HTMLElement>(".capability-slide");
-        gsap.set(cards.slice(1), { xPercent: 105 });
-        gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=140%", pin: true, scrub: .65, anticipatePin: 1 } })
-          .to(cards[1], { xPercent: 0, ease: "none" })
-          .to(cards[0], { xPercent: -18, opacity: .15, ease: "none" }, "<")
-          .to(cards[2], { xPercent: 0, ease: "none" })
-          .to(cards[1], { xPercent: -18, opacity: .15, ease: "none" }, "<");
+        const cards = gsap.utils.toArray<HTMLElement>(".what-we-do__service");
+        const orbit = ".what-we-do__orbit-ring";
+        const orbitLabels = gsap.utils.toArray<HTMLElement>(".what-we-do__orbit-ring > span");
+        const orbitText = gsap.utils.toArray<HTMLElement>(".what-we-do__orbit-label");
+        gsap.set(cards.slice(1), { yPercent: 112, opacity: 0 });
+        gsap.set(orbitLabels.slice(1), { color: "rgba(245,245,245,.34)", fontSize: 15 });
+        gsap.set(orbitLabels[0], { color: "#f5f5f5", fontSize: 18 });
+        const timeline = gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: `+=${services.length * 95}%`, pin: true, scrub: .65, anticipatePin: 1 } });
+        cards.slice(1).forEach((card, index) => {
+          timeline
+            .to(cards[index], { yPercent: -112, opacity: 0, ease: "none" })
+            .to(card, { yPercent: 0, opacity: 1, ease: "none" }, "<")
+            .to(orbit, { rotation: -60 * (index + 1), ease: "none" }, "<")
+            .to(orbitText, { rotation: 60 * (index + 1), ease: "none" }, "<")
+            .to(orbitLabels[index], { color: "rgba(245,245,245,.34)", fontSize: 15, ease: "none" }, "<")
+            .to(orbitLabels[index + 1], { color: "#f5f5f5", fontSize: 18, ease: "none" }, "<");
+        });
       });
       media.add("(max-width: 767px) and (prefers-reduced-motion: no-preference)", () => {
-        gsap.utils.toArray<HTMLElement>(".capability-slide").forEach((card) => gsap.from(card, { y: 70, opacity: 0, duration: .7, ease: "power3.out", scrollTrigger: { trigger: card, start: "top 88%" } }));
+        gsap.utils.toArray<HTMLElement>(".what-we-do__service").forEach((card) => gsap.from(card, { y: 56, opacity: 0, duration: .65, ease: "power3.out", scrollTrigger: { trigger: card, start: "top 88%" } }));
       });
       return () => media.revert();
     }, root);
     return () => context.revert();
   }, []);
-  return <section ref={root} className="what-we-do"><header className="what-we-do__head"><span>01 / What we do</span><h2>ONE IDEA. <i>EVERY CHANNEL.</i></h2></header><div className="what-we-do__stage">{capabilities.map(item => <article className="capability-slide" key={item.number}><div className="capability-slide__media"><Image src={item.image} alt={`${item.title} proof`} fill sizes="(max-width: 767px) 100vw, 58vw" /></div><div className="capability-slide__copy"><span>{item.number} / 03</span><h3>{item.title}</h3><p>{item.copy}</p><Link className="text-link" href="/contact#audit">Request free audit ↗</Link></div></article>)}</div></section>;
+
+  return <section ref={root} className="what-we-do"><header className="what-we-do__head"><span>01 / What we do</span><h2>ONE IDEA. <i>EVERY CHANNEL.</i></h2></header><div className="what-we-do__stage"><aside className="what-we-do__orbit" aria-hidden="true"><div className="what-we-do__orbit-ring">{services.map((service, index) => <span key={service.slug} style={{ "--orbit-angle": `${index * 60}deg` } as React.CSSProperties}><span className="what-we-do__orbit-label">{service.number}</span></span>)}</div></aside>{services.map(service => <article className="what-we-do__service" key={service.slug}><div className="what-we-do__service-copy"><span>{service.number} / 06</span><h3>{service.name}</h3><p>{service.description}</p><Link className="text-link" href={`/services#${service.slug}`}>Explore service</Link></div></article>)}</div></section>;
 }

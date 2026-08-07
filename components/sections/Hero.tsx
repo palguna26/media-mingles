@@ -45,8 +45,8 @@ export function Hero() {
       <div className="hero__content">
         <p className="hero__label">© Since — 2018</p>
         <div className="hero__main">
-          <h1><span><b className="hero__line hero__line--media">MEDIA</b></span><span><b className="hero__line hero__line--mingles">MINGLES</b></span></h1>
-          <ol className="hero__services" aria-label="Our services">{services.slice(0, 5).map(service => <li key={service.slug}><span>({service.number})</span><Link href={`/services#${service.slug}`}>{service.name}</Link></li>)}</ol>
+          <h1><span><b className="hero__line hero__line--media">Media</b></span><span><b className="hero__line hero__line--mingles">Mingles.</b></span></h1>
+          <ol className="hero__services" aria-label="Our services">{services.map(service => <li key={service.slug}><span>({service.number})</span><Link href={`/services#${service.slug}`}>{service.name}</Link></li>)}</ol>
         </div>
         <div className="hero__footer-row"><Link className="hero__scroll" href="#work">Scroll to explore ↓</Link><Link className="hero__contact-card" href="/contact#audit" data-cursor="OPEN"><span>Let&apos;s talk</span><strong>Request a free audit</strong><i aria-hidden="true">↗</i></Link></div>
         <div className="hero__baseline" aria-hidden="true" />
