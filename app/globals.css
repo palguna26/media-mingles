@@ -319,3 +319,14 @@ i,em{font-style:normal}
 
 /* Compact testimonial cards. */
 @media(min-width:768px){.testimonials--cards .testimonial-card{width:75%;padding:clamp(18px,2.25vw,32px)!important}.testimonials--cards .testimonial-card p{max-width:510px;margin:24px 0 39px;font-size:clamp(20px,2.25vw,34.5px)}}
+
+/* Full-bleed showreel player. */
+.showreel--video{display:grid;min-height:100svh;padding:clamp(96px,11vw,160px) var(--gutter);place-items:center;isolation:isolate;overflow:hidden;background:var(--paper)!important;color:var(--ink)}
+.showreel__ghost{position:absolute;z-index:-1;top:50%;left:50%;width:max-content;margin:0;color:rgba(16,16,16,.1);font:500 clamp(72px,13.5vw,270px)/.78 var(--font-geist);letter-spacing:-.1em;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.showreel__frame{position:relative;z-index:1;width:min(100%,1080px);aspect-ratio:16/9;overflow:hidden;border-radius:clamp(24px,3vw,42px);background:#080808;box-shadow:0 34px 44px rgba(0,0,0,.19);cursor:pointer}
+.showreel__frame video{display:block;width:100%;height:100%;object-fit:cover}
+.showreel__frame:after{position:absolute;right:8%;bottom:-10%;left:8%;z-index:-1;height:22%;content:"";background:rgba(16,16,16,.3);filter:blur(28px);opacity:.38}
+.showreel__controls{position:absolute;right:18px;bottom:16px;left:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;color:#fff;font:600 11px/1 var(--font-geist);letter-spacing:.08em;text-shadow:0 1px 8px rgba(0,0,0,.75);pointer-events:none}
+.showreel__controls>div{display:flex;gap:8px;pointer-events:auto}.showreel__controls button{display:inline-flex;min-height:38px;align-items:center;gap:7px;padding:0 13px;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:rgba(8,8,8,.54);color:#fff;font:600 11px/1 var(--font-geist);letter-spacing:0;cursor:pointer;backdrop-filter:blur(8px);transition:background .2s ease,color .2s ease}.showreel__controls button:hover,.showreel__controls button:focus-visible{background:#fff;color:#080808}
+.showreel__frame:fullscreen{width:100vw;height:100vh;aspect-ratio:auto;border-radius:0}.showreel__frame:fullscreen video{object-fit:contain}.showreel__frame:fullscreen .showreel__controls{right:28px;bottom:24px;left:28px}
+@media(max-width:767px){.showreel--video{min-height:72svh;padding:88px 19px}.showreel__ghost{font-size:21vw}.showreel__frame{width:100%;border-radius:22px}.showreel__controls{right:12px;bottom:12px;left:12px}.showreel__controls>span{display:none}.showreel__controls button{min-height:34px;padding:0 10px;font-size:10px}}

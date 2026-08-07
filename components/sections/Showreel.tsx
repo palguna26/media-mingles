@@ -1,20 +1,70 @@
 "use client";
 
-import Image from "next/image";
-import { Play } from "lucide-react";
-import { useLayoutEffect, useRef } from "react";
-import { gsap } from "@/lib/gsap";
-import { showreel } from "@/data/media";
+import { Maximize, Volume2, VolumeX } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 export function Showreel() {
-  const root = useRef<HTMLElement>(null);
-  useLayoutEffect(() => {
-    const context = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => gsap.timeline({ scrollTrigger: { trigger: root.current, start: "top top", end: "+=145%", scrub: .7, pin: true, anticipatePin: 1 } }).fromTo(".showreel__poster", { yPercent: 100, clipPath: "inset(9% 16% 9% 16%)" }, { yPercent: 0, clipPath: "inset(0% 0% 0% 0%)", ease: "none" }).to(".showreel__statement", { yPercent: -18, opacity: .12, letterSpacing: ".02em", ease: "none" }, 0).from(".showreel__overlay > *", { y: 50, opacity: 0, stagger: .08, ease: "power3.out" }, .55));
-      return () => mm.revert();
-    }, root);
-    return () => context.revert();
+  const frame = useRef<HTMLDivElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
+  const [isMuted, setIsMuted] = useState(true);
+
+  useEffect(() => {
+    const syncMuteState = () => setIsMuted(video.current?.muted ?? true);
+    const currentFrame = frame.current;
+    document.addEventListener("fullscreenchange", syncMuteState);
+    currentFrame?.addEventListener("fullscreenchange", syncMuteState);
+    return () => {
+      document.removeEventListener("fullscreenchange", syncMuteState);
+      currentFrame?.removeEventListener("fullscreenchange", syncMuteState);
+    };
   }, []);
-  return <section ref={root} className="showreel"><div className="showreel__statement"><span>04 / Showreel</span><h2>STRATEGY IS INVISIBLE.<br />THE RESULT SHOULD <i>NOT BE.</i></h2></div><div className="showreel__poster" data-cursor="VIEW"><Image src={showreel.poster} alt="Media Mingles showreel poster" fill sizes="100vw" /><div className="showreel__overlay"><span className="showreel__timecode">MM / REEL 001</span><h3>MAKE<br />THEM<br /><i>FEEL IT.</i></h3><button type="button" disabled aria-describedby="reel-status"><Play /> Play reel</button><p id="reel-status">Showreel coming soon</p></div></div></section>;
+
+  const toggleMute = () => {
+    if (!video.current) return;
+    video.current.muted = !video.current.muted;
+    setIsMuted(video.current.muted);
+  };
+
+  const openFullscreen = async () => {
+    if (!frame.current || document.fullscreenElement) return;
+    try {
+      await frame.current.requestFullscreen();
+    } catch {
+      // Fullscreen can be blocked by browser settings.
+    }
+  };
+
+  return (
+    <section className="showreel showreel--video">
+      <p className="showreel__ghost" aria-hidden="true">MAKE THEM FEEL IT.</p>
+      <div ref={frame} className="showreel__frame">
+        <video
+          ref={video}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          preload="metadata"
+          onClick={openFullscreen}
+          aria-label="Media Mingles showreel. Click to view fullscreen."
+        >
+          <source src="/showreel.webm" type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="showreel__controls">
+          <span>SHOWREEL / 2026</span>
+          <div>
+            <button type="button" onClick={toggleMute} aria-label={isMuted ? "Unmute showreel" : "Mute showreel"}>
+              {isMuted ? <VolumeX size={17} /> : <Volume2 size={17} />}
+              {isMuted ? "Unmute" : "Mute"}
+            </button>
+            <button type="button" onClick={openFullscreen} aria-label="Open showreel fullscreen">
+              <Maximize size={17} />
+              Fullscreen
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
